@@ -16,7 +16,7 @@ CREATE TABLE personal_info (
 
 -- Insert default data
 INSERT INTO personal_info (name, title, email, phone, profile_description) 
-VALUES ('John Doe', 'Web Developer | Programmer | Tech Enthusiast', 'johndoe@example.com', '(123) 456-7890', 'I am a passionate web developer with experience in creating dynamic websites and applications.');
+VALUES ('sasmen', 'Web Developer | Programmer | Tech Enthusiast', 'johndoe@example.com', '(123) 456-7890', 'I am a passionate web developer with experience in creating dynamic websites and applications.');
 
 -- Create a table for admin login credentials
 CREATE TABLE admins (
@@ -25,6 +25,17 @@ CREATE TABLE admins (
     password VARCHAR(255) NOT NULL
 );
 
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
 -- Insert an admin user (the password should be hashed using PHP's password_hash('password123', PASSWORD_DEFAULT) function)
 INSERT INTO admins (username, password) 
 VALUES ('admin', '$2y$10$ybOP3hulir7vLGAC4A8xUe9nAEAVnGZHsPWcdo7.EWUANkcKwFVLi'); -- Password: password123
+
+
+Insert into users (username, password)
+VALUES ('', ''); -- Password: password123

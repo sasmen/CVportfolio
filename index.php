@@ -50,6 +50,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $isAdmin) {
             <?php else: ?>
                 <a href="login.php">Admin Login</a>
             <?php endif; ?>
+            <nav>
+                <ul>
+                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="about.php">À propos</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <?php if (isset($_SESSION['users_id'] , $_SESSION['admin_id'])): ?>
+                        <li><a href="logout.php">Déconnexion</a></li>
+                    <?php else: ?>
+                        <li><a href="login.php">Connexion</a></li>
+                    <?php endif; ?>
+                </ul>
+            </nav>        
         </header>
 
         <!-- Profile Section -->
@@ -85,7 +97,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $isAdmin) {
             </div>
         </div>
         <?php endif; ?>
+        <!-- Modal for updating personal information (visible only for users) -->
+        <!-- Modifier les id et class pour personnaliser et différencier users et admin-->
+        <?php if ($isusers): ?>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Edit Personal Information</h2>
+                <form method="POST" action="">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="<?php echo $personalInfo['name']; ?>" required>
+
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" value="<?php echo $personalInfo['title']; ?>" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<?php echo $personalInfo['email']; ?>" required>
+
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" value="<?php echo $personalInfo['phone']; ?>" required>
+
+                    <label for="profileDescription">Profile Description:</label>
+                    <textarea id="profileDescription" name="profileDescription" required><?php echo $personalInfo['profile_description']; ?></textarea>
+
+                    <input type="submit" value="Save Changes">
+                </form>
+            </div>
+        <?php endif; ?>
     </div>
+
+    <footer>
+        <p>
+            Samson Harize 
+            ©2024 CV Portfolio
+        </p>
+    </footer>
 
     <script>
         // Get modal and elements
