@@ -29,12 +29,15 @@
 
     <!-- Section: Formation -->
     <div class="section">
-        <h3>Formation</h3>
+        <h3>Formation actuelle</h3>
         <p>
-            
+            Étudiant en 2éme année d'informatique à Ynov Toulouse
         </p>
         <ol>
-            
+            2022-2024 en info à MyDigitalSchool 
+            2019-2022 en histoire à l'université de Toulouse Jean Jaurès
+            2018-2019 BTS Travaux Publics à Gourdan-Polignan
+            2016-2018 Bac STI2D Génie Civil au Lycée Déodat de Séverac à Toulouse
         </ol>
     </div>
 
@@ -42,7 +45,12 @@
     <div class="section">
         <h3>Compétences</h3>
         <ol>
-            
+            HTML
+            CSS
+            JavaScript
+            PHP
+            SQL
+            Python
         </ol>
     </div>
 
