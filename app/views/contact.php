@@ -1,9 +1,7 @@
 <?php
-include 'header.php';
-include 'db.php';
-include 'functions.php';
 
-session_start();
+
+//session_start();
 
 $message = '';
 
@@ -23,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <main>
     <h1>Contact Us</h1>
-    
+
     <?php if ($message): ?>
         <p><?php echo htmlspecialchars($message); ?></p>
     <?php endif; ?>
@@ -44,7 +42,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="Send Message">
     </form>
 </main>
-
-<?php
-include 'footer.php';
-?>
