@@ -1,32 +1,47 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-
-//session_start();
-
-$message = '';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $subject = $_POST['subject'];
-    $message_content = $_POST['message'];
-
-    if (sendContactMessage($name, $email, $subject, $message_content)) {
-        $message = "Thank you for your message. We'll get back to you soon!";
-    } else {
-        $message = "There was an error sending your message. Please try again later.";
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form with Mailto</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
     }
-}
-?>
 
-<main>
-    <h1>Contact Us</h1>
+    form {
+        display: flex;
+        flex-direction: column;
+    }
 
-    <?php if ($message): ?>
-        <p><?php echo htmlspecialchars($message); ?></p>
-    <?php endif; ?>
+    label,
+    input,
+    textarea {
+        margin-bottom: 10px;
+    }
 
-    <form method="post">
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    </style>
+</head>
+
+<body>
+    <h2>Contact Us</h2>
+    <form action="mailto:samson.harize@gmail.com" method="post" enctype="text/plain">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
 
@@ -37,8 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" id="subject" name="subject" required>
 
         <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
+        <textarea id="message" name="message" rows="4" required></textarea>
 
-        <input type="submit" value="Send Message">
+        <input type="submit" value="Send Email">
     </form>
-</main>
+</body>
+
+</html>
