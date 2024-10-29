@@ -1,4 +1,6 @@
-first contact form
+<?php
+
+?>
 
 
 <!DOCTYPE html>
@@ -12,24 +14,18 @@ first contact form
 
 <body>
     <main>
-        <h1>Contact Us</h1>
-
-        <form method="post" enctype="text/plain">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="subject">Subject:</label>
-            <input type="text" id="subject" name="subject" required>
-
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-
-            <a href="mailto:samson.harize@gmail.com" class="mail-button"></a>
-            <input type="submit" value="Send Message">
+        <h1>My CV</h1>
+        <?php if (isset($_SESSION['user_id'])): ?>
+        <form method="post">
+            <textarea name="cv_content"><?php echo htmlspecialchars(string: $cv_content); ?></textarea>
+            <input type="submit" value="Save CV">
         </form>
+        <?php else: ?>
+        <div></div>
+        <?php endif; ?>
+
+        <h2>Image Example</h2> <!-- problème quant à l'affichage du CV -->
+        <img src="CVSamson.jpg" alt="CVSamson" width="620" height="877" alt="CV">
     </main>
 </body>
 

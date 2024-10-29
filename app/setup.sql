@@ -30,6 +30,14 @@ CREATE TABLE admins (
 );
 
 
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    -- autres colonnes selon besoins
+);
+
+
 
 -- Insert an admin user (the password should be hashed using PHP's password_hash('password123', PASSWORD_DEFAULT) function)
 INSERT INTO admins (username, password) 
