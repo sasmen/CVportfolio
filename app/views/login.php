@@ -1,124 +1,155 @@
 <?php
-// Démarrer la session
-
-// Informations de connexion à la base de données
-$host = 'db';
-$dbname = 'cv_db';
-$username = 'root';
-$password = 'root';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
+// Handle Login
+if (isset($_POST['login'])) {
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
 
-    // Préparation de la requête pour vérifier l'utilisateur
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
-    $stmt->execute(['username' => $username]);
-    $user = $stmt->fetch();
+    $query = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn, $query);
 
-    // Vérification du mot de passe
-    if ($user && password_verify($password, $user['password'])) {
-        // Si les informations sont correctes, on connecte l'utilisateur
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        header('Location: /home');
-        exit();
+    if (mysqli_num_rows($result) == 1) {
+        $user = mysqli_fetch_assoc($result);
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['email'] = $user['email'];
+            header("Location: dashboard.php");
+        } else {
+            $error = "Invalid password";
+        }
     } else {
-        $error = "Invalid username or password";
+        $error = "User not found";
+    }
+}
+
+// Handle Registration
+if (isset($_POST['register'])) {
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    // Check if email already exists
+    $query = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $error = "Email already exists";
+    } else {
+        $query = "INSERT INTO users (email, password) VALUES ('$email', '$password')";
+        if (mysqli_query($conn, $query)) {
+            $success = "Registration successful! Please login.";
+        } else {
+            $error = "Registration failed";
+        }
     }
 }
 ?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login System</title>
     <style>
-        /* Styles de base */
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            background-color: #f4f4f9;
+            padding: 20px;
+            background-color: #f4f4f4;
         }
 
-        /* Conteneur du formulaire */
-        main {
-            background-color: #ffffff;
-            padding: 20px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
+        .container {
             max-width: 400px;
-            text-align: center;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 20px;
+        .form-group {
+            margin-bottom: 15px;
         }
 
-        /* Message d'erreur */
-        p.error {
-            color: #ff4d4d;
-            font-size: 14px;
-            margin-bottom: 20px;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
 
-        /* Champs de formulaire */
-        form input[type="text"],
-        form input[type="password"] {
+        .form-group input {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
+            padding: 8px;
+            border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
         }
 
-        /* Bouton de soumission */
-        form input[type="submit"] {
-            width: 100%;
-            background-color: #4CAF50;
+        .btn {
+            background: #4CAF50;
             color: white;
-            padding: 12px;
+            padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        form input[type="submit"]:hover {
-            background-color: #45a049;
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            color: green;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body>
-    <main>
-        <h1>Login</h1>
-        <?php if (isset($error)): ?>
-            <p class="error"><?php echo htmlspecialchars($error); ?></p>
-        <?php endif; ?>
-        <form method="post">
-            <input type="text" name="username" placeholder="Nom d'utilisateur" required>
-            <input type="password" name="password" placeholder="Mot de passe" required>
-            <input type="submit" value="Connexion">
+    <div class="container">
+        <h2>Login</h2>
+        <?php if (isset($error)) { ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php } ?>
+        <?php if (isset($success)) { ?>
+            <div class="success"><?php echo $success; ?></div>
+        <?php } ?>
+
+        <!-- Login Form -->
+        <form method="post" action="">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="login" class="btn">Login</button>
+            </div>
         </form>
-    </main>
+
+        <hr>
+
+        <h2>Register</h2>
+        <!-- Registration Form -->
+        <form method="post" action="">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="register" class="btn">Register</button>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

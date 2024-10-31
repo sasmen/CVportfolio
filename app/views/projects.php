@@ -4,20 +4,20 @@
 <head>
     <title>Project Management</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-    .project-container {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
+        .project-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
 
-    .project-container img {
-        max-width: 100%;
-        height: auto;
-    }
+        .project-container img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 
@@ -49,21 +49,37 @@
 
         // Handle the image upload
         $project_image = $_FILES['project-image'];
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($project_image['name']);
-        if (move_uploaded_file($project_image['tmp_name'], $target_file)) {
+        $target_file = "uploads/" . basename($project_image['name']);
+        if (move_uploaded_file($project_image['tmp_name'],  $_SERVER['DOCUMENT_ROOT'] . "/" . $target_file)) {
             // Save the project data to a file or database
             $project_data = [
                 'title' => $project_title,
-                'image' => $target_file,
+                'image' => urlencode($target_file),
                 'description' => $project_description
             ];
-            file_put_contents('projects.json', json_encode($project_data, JSON_PRETTY_PRINT), FILE_APPEND);
-            echo "<div class='project-container'>";
-            echo "<h2>$project_title</h2>";
-            echo "<img src='$target_file' alt='$project_title'>";
-            echo "<p>$project_description</p>";
-            echo "</div>";
+            // Extract data from JSON file
+            $projects_file_path = $_SERVER['DOCUMENT_ROOT'] . "/" . 'projects.json';
+            $data = file_get_contents($projects_file_path);
+            // Format to known structure
+            $projects = json_decode($data, true);
+            // Make the wanted modifications (add a project)
+            if (is_array($projects)) {
+                // Push JSON formatted project data in projects list
+                array_push($projects, $project_data);
+                // Format to JSON again
+                $formatted_projects = json_encode($projects, JSON_PRETTY_PRINT);
+                // Overwrite content of file
+                file_put_contents($projects_file_path, $formatted_projects);
+            } else {
+                var_dump($projects);
+            }
+
+            // file_put_contents('projects.json', json_encode($project_data, JSON_PRETTY_PRINT), FILE_APPEND);
+            // echo "<div class='project-container'>";
+            // echo "<h2>$project_title</h2>";
+            // echo "<img src='$target_file' alt='$project_title'>";
+            // echo "<p>$project_description</p>";
+            // echo "</div>";
         } else {
             echo "There was an error uploading your image.";
         }
@@ -71,13 +87,18 @@
 
     // Load and display existing projects
     if (file_exists('projects.json')) {
-        $projects = json_decode(file_get_contents('projects.json'), true);
+        $data = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/" . 'projects.json');
+        $projects = json_decode($data, true);
         foreach ($projects as $project) {
-            echo "<div class='project-container'>";
-            echo "<h2>{$project['title']}</h2>";
-            echo "<img src='{$project['image']}' alt='{$project['title']}'>";
-            echo "<p>{$project['description']}</p>";
-            echo "</div>";
+    ?>
+            <div class="project-container">
+                <h2>
+                    <?php echo $project["title"] ?>
+                </h2>
+                <img src="<?php echo urldecode($project['image']) ?>" alt="<?php echo $project["title"] ?>">
+                <p> <?php echo $project["description"] ?></p>
+            </div>
+    <?php
         }
     }
     ?>
