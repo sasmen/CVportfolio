@@ -43,67 +43,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-    /* Styles de base */
-    body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #f4f4f9;
-    }
+        /* Styles de base */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
 
-    /* Conteneur du formulaire */
-    main {
-        background-color: #ffffff;
-        padding: 20px 40px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
-    }
+        /* Conteneur du formulaire */
+        main {
+            background-color: #ffffff;
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
 
-    h1 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 20px;
-    }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
 
-    /* Message d'erreur */
-    p.error {
-        color: #ff4d4d;
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
+        /* Message d'erreur */
+        p.error {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
 
-    /* Champs de formulaire */
-    form input[type="text"],
-    form input[type="password"] {
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
+        /* Champs de formulaire */
+        form input[type="text"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-    /* Bouton de soumission */
-    form input[type="submit"] {
-        width: 100%;
-        background-color: #4CAF50;
-        color: white;
-        padding: 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+        /* Bouton de soumission */
+        form input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    form input[type="submit"]:hover {
-        background-color: #45a049;
-    }
+        form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <main>
         <h1>Login</h1>
         <?php if (isset($error)): ?>
-        <p class="error"><?php echo htmlspecialchars($error); ?></p>
+            <p class="error"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
         <form method="post">
             <input type="text" name="username" placeholder="Nom d'utilisateur" required>

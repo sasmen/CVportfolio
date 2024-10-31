@@ -59,10 +59,3 @@ function getUser($admins): mixed
     $stmt->execute(params: [$admins]);
     return $stmt->fetch();
 }
-
-function sendContactMessage($name, $email, $subject, $message_content): bool
-{
-    global $pdo;
-    $stmt = $pdo->prepare(query: 'INSERT INTO messages (name, email, subject, message_content) VALUES (?, ?, ?, ?)');
-    return $stmt->execute(params: [$name, $email, $subject, $message_content]);
-}
